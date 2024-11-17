@@ -22,10 +22,6 @@ on:
         description: 'Cache wrt build'
         required: false
         default: 'true'
-      debug:
-        description: 'Debug'
-        required: false
-        default: 'false'
 
 env:
   REPO_URL: https://github.com/immortalwrt/immortalwrt
