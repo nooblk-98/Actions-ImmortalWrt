@@ -97,9 +97,12 @@ jobs:
         sed -i "/exit 0/i\sed -i '/DISTRIB_VERSIONS/d' /etc/openwrt_release" openwrt/package/emortal/default-settings/files/99-default-settings
         sed -i "/DISTRIB_VERSIONS/a\echo \"DISTRIB_VERSIONS=\'${TEMP:8}\'\" >> /etc/openwrt_release" openwrt/package/emortal/default-settings/files/99-default-settings
 
+    - name: SSH connection to Actions
+      uses: mxschmitt/action-tmate@master
+      if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
+
     - name: Load custom configuration
       run: |
-        set -x
         [ -e files ] && mv files openwrt/files
         [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
         chmod +x $DIY_P2_SH
@@ -107,13 +110,6 @@ jobs:
         $GITHUB_WORKSPACE/$DIY_P2_SH
         cat package/emortal/default-settings/files/99-default-settings
         
-    - name: SSH connection to Actions
-      uses: P3TERX/ssh2actions@v1.0.0
-      if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
-      env:
-        TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-
     - name: Download package
       id: package
       run: |
