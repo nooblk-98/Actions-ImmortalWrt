@@ -58,9 +58,10 @@ jobs:
     - name: Remove old Releases and workflow runs
       uses: ophub/delete-releases-workflows@main
       with:
+        gh_token: ${{ secrets.GITHUB_TOKEN }}
         delete_releases: true
         releases_keep_latest: 3
         delete_tags: true
         delete_workflows: true
         workflows_keep_day: 6
-        gh_token: ${{ secrets.GITHUB_TOKEN }}
+
