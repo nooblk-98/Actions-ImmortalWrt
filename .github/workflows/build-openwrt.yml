@@ -97,16 +97,17 @@ jobs:
     - name: Install feeds
       run: cd openwrt && ./scripts/feeds install -a -f
 
-    - name: Openwrt AutoUpdate
+    - name: Make luci-app-easyupdate happy
       run: |
         TEMP=$(date +"OpenWrt_%Y%m%d_%H%M%S_")$(git rev-parse --short HEAD)
         echo "RELEASE_TAG=$TEMP" >> $GITHUB_ENV
-        #required>>add "DISTRIB_GITHUB" to "zzz-default-settings"
+        #required>>add "DISTRIB_GITHUB" to "99-default-settings"
         sed -i "/exit 0/i\sed -i '/DISTRIB_GITHUB/d' /etc/openwrt_release" openwrt/package/emortal/default-settings/files/99-default-settings
         sed -i "/DISTRIB_GITHUB/a\echo \"DISTRIB_GITHUB=\'https://github.com/${{github.repository}}\'\" >> /etc/openwrt_release" openwrt/package/emortal/default-settings/files/99-default-settings
-        #required>>add "DISTRIB_VERSIONS" to "zzz-default-settings"
+        #required>>add "DISTRIB_VERSIONS" to "99-default-settings"
         sed -i "/exit 0/i\sed -i '/DISTRIB_VERSIONS/d' /etc/openwrt_release" openwrt/package/emortal/default-settings/files/99-default-settings
         sed -i "/DISTRIB_VERSIONS/a\echo \"DISTRIB_VERSIONS=\'${TEMP:8}\'\" >> /etc/openwrt_release" openwrt/package/emortal/default-settings/files/99-default-settings
+        touch package/base-files/files/etc/passwd
 
     - name: Load custom configuration
       run: |
