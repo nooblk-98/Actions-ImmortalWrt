@@ -11,22 +11,21 @@ Compatible with [luci-app-easyupdate](https://github.com/sundaqiang/openwrt-pack
 
 ## Credits
 
-- [luci-app-easyupdate](https://github.com/sundaqiang/openwrt-packages/tree/master/luci-app-easyupdate)
 - [Actions-OpenWrt](https://github.com/P3TERX/Actions-OpenWrt)
 - [Microsoft Azure](https://azure.microsoft.com)
 - [GitHub Actions](https://github.com/features/actions)
-- [OpenWrt](https://github.com/openwrt/openwrt)
-- [Lean's OpenWrt](https://github.com/coolsnowwolf/lede)
-- [tmate](https://github.com/tmate-io/tmate)
-- [mxschmitt/action-tmate](https://github.com/mxschmitt/action-tmate)
-- [csexton/debugger-action](https://github.com/csexton/debugger-action)
-- [Cowtransfer](https://cowtransfer.com)
-- [WeTransfer](https://wetransfer.com/)
-- [Mikubill/transfer](https://github.com/Mikubill/transfer)
+- [ImmortalWrt](https://github.com/immortalwrt/immortalwrt)
+- [sundaqiang/openwrt-packages](https://github.com/sundaqiang/openwrt-packages/tree/master/luci-app-easyupdate)
+- [QiuSimons/luci-app-daed](https://github.com/QiuSimons/luci-app-daed)
+- [sirpdboy/sirpdboy-package](https://github.com/sirpdboy/sirpdboy-package)
+- [brvphoenix/luci-app-wrtbwmon](https://github.com/brvphoenix/luci-app-wrtbwmon)
+- [stupidloud/cachewrtbuild](https://github.com/stupidloud/cachewrtbuild)
+- [jlumbroso/free-disk-space](https://github.com/jlumbroso/free-disk-space)
 - [softprops/action-gh-release](https://github.com/softprops/action-gh-release)
-- [ActionsRML/delete-workflow-runs](https://github.com/ActionsRML/delete-workflow-runs)
-- [dev-drprasad/delete-older-releases](https://github.com/dev-drprasad/delete-older-releases)
+- [lhotari/action-upterm](https://github.com/lhotari/action-upterm)
 - [peter-evans/repository-dispatch](https://github.com/peter-evans/repository-dispatch)
+- [TheDoctor0/zip-release](https://github.com/TheDoctor0/zip-release)
+- [delete-releases-workflows](https://github.com/ophub/delete-releases-workflows)
 
 
 ## License
