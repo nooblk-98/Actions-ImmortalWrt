@@ -232,7 +232,7 @@ jobs:
         keep_minimum_runs: 7
 
     - name: Remove old Releases
-      uses: dev-drprasad/delete-older-releases@v0.3.4
+      uses: ophub/delete-releases-workflows@main
       if: env.UPLOAD_RELEASE == 'true' && !cancelled()
       with:
         keep_latest: 7
