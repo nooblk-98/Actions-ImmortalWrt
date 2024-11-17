@@ -11,7 +11,7 @@ Compatible with [luci-app-easyupdate](https://github.com/sundaqiang/openwrt-pack
 
 ## Credits
 
-- [Actions-OpenWrt](https://github.com/P3TERX/Actions-OpenWrt)
+- [P3TERX/Actions-OpenWrt](https://github.com/P3TERX/Actions-OpenWrt)
 - [Microsoft Azure](https://azure.microsoft.com)
 - [GitHub Actions](https://github.com/features/actions)
 - [ImmortalWrt](https://github.com/immortalwrt/immortalwrt)
