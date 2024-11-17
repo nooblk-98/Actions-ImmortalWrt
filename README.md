@@ -25,7 +25,7 @@ Compatible with [luci-app-easyupdate](https://github.com/sundaqiang/openwrt-pack
 - [lhotari/action-upterm](https://github.com/lhotari/action-upterm)
 - [peter-evans/repository-dispatch](https://github.com/peter-evans/repository-dispatch)
 - [TheDoctor0/zip-release](https://github.com/TheDoctor0/zip-release)
-- [delete-releases-workflows](https://github.com/ophub/delete-releases-workflows)
+- [ophub/delete-releases-workflows](https://github.com/ophub/delete-releases-workflows)
 
 
 ## License
