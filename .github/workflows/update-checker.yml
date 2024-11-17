@@ -63,5 +63,4 @@ jobs:
         delete_tags: true
         delete_workflows: true
         workflows_keep_day: 6
-      env:
         gh_token: ${{ secrets.GITHUB_TOKEN }}
