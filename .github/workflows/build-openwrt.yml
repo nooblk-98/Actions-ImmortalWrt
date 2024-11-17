@@ -45,7 +45,6 @@ jobs:
     - name: "Optimize Disk Space"
       uses: "hugoalh/disk-space-optimizer-ghaction@main"
       with:
-        operate_async: "True"
         operate_sudo: "True"
         general_include: ".+"
         general_exclude: |-
