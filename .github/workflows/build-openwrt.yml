@@ -232,14 +232,3 @@ jobs:
         tag_name: ${{ env.RELEASE_TAG }}
         body_path: release.txt
         files: ${{ env.FIRMWARE }}/*
-
-    - name: Remove old Releases and workflow runs
-      uses: ophub/delete-releases-workflows@main
-      with:
-        delete_releases: true
-        keep_latest: 7
-        delete_tags: true
-        delete_workflows: true
-        workflows_keep_day: 10
-      env:
-        gh_token: ${{ secrets.GITHUB_TOKEN }}
