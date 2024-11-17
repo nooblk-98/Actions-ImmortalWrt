@@ -180,7 +180,11 @@ jobs:
         path: packages/
         directory: ${{ env.WORKSPACE_DIR }}/
         filename: ${{ env.UPLOAD_PATH }}/OpenWrt_firmware_packages${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}.tar.gz
-        
+
+    - name: SSH connection to Actions
+      uses: mxschmitt/action-tmate@master
+      if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
+
     - name: Organize files
       id: organize
       if: env.UPLOAD_FIRMWARE == 'true' && steps.compile.outputs.status == 'success' && !cancelled()
