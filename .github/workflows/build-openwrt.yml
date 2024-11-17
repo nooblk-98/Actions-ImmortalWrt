@@ -22,6 +22,10 @@ on:
         description: 'Cache wrt build'
         required: false
         default: 'true'
+      debug:
+        description: 'Debug'
+        required: false
+        default: 'false'
 
 env:
   REPO_URL: https://github.com/immortalwrt/immortalwrt
@@ -77,7 +81,7 @@ jobs:
         git clone --depth=1 $REPO_URL -b $REPO_BRANCH openwrt
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
         
-    - name: cache
+    - name: Cache
       if: github.event.inputs.cache == 'true' && github.event.inputs.cache != 'false'
       uses: stupidloud/cachewrtbuild@main
       with:
@@ -181,10 +185,6 @@ jobs:
         directory: ${{ env.WORKSPACE_DIR }}/
         filename: ${{ env.UPLOAD_PATH }}/OpenWrt_firmware_packages${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}.tar.gz
 
-    - name: SSH connection to Actions
-      uses: mxschmitt/action-tmate@master
-      if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
-
     - name: Organize files
       id: organize
       if: env.UPLOAD_FIRMWARE == 'true' && steps.compile.outputs.status == 'success' && !cancelled()
@@ -193,6 +193,10 @@ jobs:
         rm -rf packages
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
         echo "::set-output name=status::success"
+
+    - name: Debug
+      uses: mxschmitt/action-tmate@master
+      if: (github.event.inputs.debug == 'true' && github.event.inputs.debug  != 'false') || contains(github.event.action, 'ssh')
         
     - name: Upload firmware directory
       uses: actions/upload-artifact@main
@@ -200,24 +204,6 @@ jobs:
       with:
         name: OpenWrt_firmware${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
         path: ${{ env.FIRMWARE }}
-
-    - name: Upload firmware to cowtransfer
-      id: cowtransfer
-      if: steps.organize.outputs.status == 'success' && env.UPLOAD_COWTRANSFER == 'true' && !cancelled()
-      run: |
-        curl -fsSL git.io/file-transfer | sh
-        ./transfer cow --block 2621440 -s -p 64 --no-progress ${FIRMWARE} 2>&1 | tee cowtransfer.log
-        echo "::warning file=cowtransfer.com::$(cat cowtransfer.log | grep https)"
-        echo "::set-output name=url::$(cat cowtransfer.log | grep https | cut -f3 -d" ")"
-        
-    - name: Upload firmware to WeTransfer
-      id: wetransfer
-      if: steps.organize.outputs.status == 'success' && env.UPLOAD_WETRANSFER == 'true' && !cancelled()
-      run: |
-        curl -fsSL git.io/file-transfer | sh
-        ./transfer wet -s -p 16 --no-progress ${FIRMWARE} 2>&1 | tee wetransfer.log
-        echo "::warning file=wetransfer.com::$(cat wetransfer.log | grep https)"
-        echo "::set-output name=url::$(cat wetransfer.log | grep https | cut -f3 -d" ")"
         
     - name: Generate release tag
       id: tag
