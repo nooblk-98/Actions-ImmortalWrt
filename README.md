@@ -8,6 +8,7 @@ A repository for building **ImmortalWrt** with GitHub Actions
 
 Compatible with [luci-app-easyupdate](https://github.com/sundaqiang/openwrt-packages/tree/master/luci-app-easyupdate) to update with one click. 
 
+
 ## Credits
 
 - [Actions-OpenWrt](https://github.com/P3TERX/Actions-OpenWrt)
