@@ -193,7 +193,7 @@ jobs:
         path: ${{ env.FIRMWARE }}
 
     - name: Make luci-app-easyupdate happy again
-      if: steps.tag.outputs.status == 'success' && !cancelled()
+      if: env.UPLOAD_RELEASE == 'true' && steps.compile.outputs.status == 'success' && !cancelled()
       run: |
         cd openwrt/bin/targets/*/*
         for file in *immortalwrt*; do
@@ -204,7 +204,7 @@ jobs:
      
     - name: Upload firmware to release
       uses: softprops/action-gh-release@master
-      if: steps.tag.outputs.status == 'success' && !cancelled()
+      if: env.UPLOAD_RELEASE == 'true' && steps.compile.outputs.status == 'success' && !cancelled()
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
