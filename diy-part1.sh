@@ -16,5 +16,5 @@
 # Add a feed source
 echo 'src-git daed https://github.com/QiuSimons/luci-app-daed' >>feeds.conf.default
 echo 'src-git wrtbwmon https://github.com/brvphoenix/luci-app-wrtbwmon' >>feeds.conf.default
-echo 'src-git sundaqiang https://github.com/sundaqiang/openwrt-packages' >>feeds.conf.default
+echo 'src-git easyupdate https://github.com/mgz0227/easyupdate' >>feeds.conf.default
 echo 'src-git sirpdboy https://github.com/sirpdboy/sirpdboy-package' >>feeds.conf.default
