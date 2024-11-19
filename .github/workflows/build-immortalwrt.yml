@@ -92,7 +92,7 @@ jobs:
     - name: Install feeds
       run: cd openwrt && ./scripts/feeds install -a -f
 
-    - name: Make luci-app-easyupdate happy
+    - name: Make easyupdate happy
       run: |
         TEMP=$(date +"OpenWrt_%Y%m%d_%H%M%S_")$(git rev-parse --short HEAD)
         echo "RELEASE_TAG=$TEMP" >> $GITHUB_ENV
@@ -190,16 +190,6 @@ jobs:
       with:
         name: ImmortalWrt_firmware${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
         path: ${{ env.FIRMWARE }}
-
-    - name: Make luci-app-easyupdate happy again
-      if: env.UPLOAD_RELEASE == 'true' && steps.compile.outputs.status == 'success' && !cancelled()
-      run: |
-        cd openwrt/bin/targets/*/*
-        for file in *immortalwrt*; do
-          newfile="${file//immortalwrt/openwrt}"
-          mv "$file" "$newfile"
-        done
-        sed -i 's/immortalwrt/openwrt/g' sha256sums
      
     - name: Upload firmware to release
       uses: softprops/action-gh-release@master
