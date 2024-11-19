@@ -100,7 +100,7 @@ jobs:
 
     - name: Make easyupdate happy
       run: |
-        TEMP=$(date +"OpenWrt_%Y%m%d_%H%M%S_")$(git rev-parse --short HEAD)
+        TEMP=$(date +"ImmortalWrt_%Y%m%d_%H%M%S_")$(git rev-parse --short HEAD)
         echo "RELEASE_TAG=$TEMP" >> $GITHUB_ENV
         sed -i "/exit 0/i\sed -i '/DISTRIB_GITHUB/d' /etc/openwrt_release" openwrt/package/emortal/default-settings/files/99-default-settings
         sed -i "/DISTRIB_GITHUB/a\echo \"DISTRIB_GITHUB=\'https://github.com/${{github.repository}}\'\" >> /etc/openwrt_release" openwrt/package/emortal/default-settings/files/99-default-settings
