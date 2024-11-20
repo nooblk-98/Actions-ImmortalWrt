@@ -45,7 +45,7 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-    - name: Free disk space
+    - name: Free up disk space
       uses: jlumbroso/free-disk-space@main
       with:
         tool-cache: false
@@ -77,13 +77,22 @@ jobs:
         df -hT $PWD
         git clone --depth=1 $REPO_URL -b $REPO_BRANCH openwrt
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
-        
+
+    - name: Free up disk space again
+      env:
+        DEBIAN_FRONTEND: noninteractive
+      run: |
+        sudo mkdir -p -m 777 /mnt/openwrt/dl /mnt/openwrt/staging_dir /mnt/openwrt/build_dir
+        ln -sf /mnt/openwrt/dl openwrt/dl
+        ln -sf /mnt/openwrt/staging_dir openwrt/staging_dir
+        ln -sf /mnt/openwrt/build_dir openwrt/build_dir
+
     - name: Cache
       uses: stupidloud/cachewrtbuild@main
-      if: github.event.inputs.nocache  != 'true'
       with:
         ccache: 'true'
-        prefix: ${{ github.workspace }}/openwrt
+        prefix: ${{ github.workspace }}/${{ env.BRANCH_NAME }}_${{ env.DEVICE_NAME }}
+        clean: ${{ inputs.nocache }}
         mixkey: 'x86-64'
         
     - name: Load custom feeds
@@ -145,7 +154,6 @@ jobs:
         echo -e "$(nproc) thread compile"
         make -j$(nproc) || make -j1 || make -j1 V=s
         echo "status=success" >> $GITHUB_OUTPUT
-        
         
     - name: Check space usage
       if: (!cancelled())
