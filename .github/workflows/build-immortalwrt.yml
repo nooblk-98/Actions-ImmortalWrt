@@ -20,7 +20,7 @@ on:
         default: 'false'
         type: boolean
       nocache:
-        description: 'Disable Building Cache'
+        description: 'Clean Building Cache'
         required: false
         default: 'false'
         type: boolean
