@@ -139,6 +139,7 @@ jobs:
         sed -i "/DISTRIB_GITHUB/a\echo \"DISTRIB_GITHUB=\'https://github.com/${{github.repository}}\'\" >> /etc/openwrt_release" openwrt/package/emortal/default-settings/files/99-default-settings
         sed -i "/exit 0/i\sed -i '/DISTRIB_VERSIONS/d' /etc/openwrt_release" openwrt/package/emortal/default-settings/files/99-default-settings
         sed -i "/DISTRIB_VERSIONS/a\echo \"DISTRIB_VERSIONS=\'${{ env.BUILD_TIME }}_${{ env.BUILD_NUMBER }}\'\" >> /etc/openwrt_release" openwrt/package/emortal/default-settings/files/99-default-settings
+        sed -i "/exit 0/i\chmod +x /usr/bin/easyupdate.sh" openwrt/package/emortal/default-settings/files/99-default-settings
 
     - name: SSH connection to Actions
       uses: lhotari/action-upterm@main
