@@ -13,8 +13,10 @@
 # Uncomment a feed source
 #sed -i 's/^#\(.*helloworld\)/\1/' feeds.conf.default
 
+# Remove a feed source
+sed -i '/telephony/d' feeds.conf.default
+
 # Add a feed source
-echo 'src-git uJZk https://github.com/uJZk/openwrt-packages' >> feeds.conf.default
 echo 'src-git daed https://github.com/QiuSimons/luci-app-daed' >> feeds.conf.default
 echo 'src-git wrtbwmon https://github.com/brvphoenix/luci-app-wrtbwmon' >> feeds.conf.default
 echo 'src-git sirpdboy https://github.com/sirpdboy/sirpdboy-package' >> feeds.conf.default

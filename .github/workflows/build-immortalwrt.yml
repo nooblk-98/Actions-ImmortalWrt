@@ -70,7 +70,7 @@ jobs:
 
     - name: Checkout
       uses: actions/checkout@main
-      
+
     - name: Clone source code
       working-directory: /workdir
       run: |
@@ -94,17 +94,17 @@ jobs:
         prefix: ${{ github.workspace }}/openwrt
         clean: ${{ inputs.nocache }}
         mixkey: 'x86-64'
-        
+
     - name: Load custom feeds
       run: |
         [ -e $FEEDS_CONF ] && mv $FEEDS_CONF openwrt/feeds.conf.default
         chmod +x $DIY_P1_SH
         cd openwrt
         $GITHUB_WORKSPACE/$DIY_P1_SH
-        
+
     - name: Update feeds
       run: cd openwrt && ./scripts/feeds update -a
-      
+
     - name: Install feeds
       run: cd openwrt && ./scripts/feeds install -a -f
 
@@ -125,19 +125,17 @@ jobs:
         grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
         [ -s DEVICE_NAME ] && echo "DEVICE_NAME=$(cat DEVICE_NAME)" >> $GITHUB_ENV
 
-    - name: Make luci-app-easyupdate happy
+    - name: Make Easy Update Script happy
       run: |
         sed -i "/exit 0/i\sed -i '/DISTRIB_GITHUB/d' /etc/openwrt_release" openwrt/package/emortal/default-settings/files/99-default-settings
         sed -i "/DISTRIB_GITHUB/a\echo \"DISTRIB_GITHUB=\'https://github.com/${{github.repository}}\'\" >> /etc/openwrt_release" openwrt/package/emortal/default-settings/files/99-default-settings
         sed -i "/exit 0/i\sed -i '/DISTRIB_VERSIONS/d' /etc/openwrt_release" openwrt/package/emortal/default-settings/files/99-default-settings
         sed -i "/DISTRIB_VERSIONS/a\echo \"DISTRIB_VERSIONS=\'${{ env.BUILD_TIME }}_${{ env.BUILD_NUMBER }}\'\" >> /etc/openwrt_release" openwrt/package/emortal/default-settings/files/99-default-settings
-        mkdir openwrt/package/base-files/files/etc/crontabs
-        touch openwrt/package/base-files/files/etc/crontabs/root
 
     - name: SSH connection to Actions
       uses: lhotari/action-upterm@main
       if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
-        
+
     - name: Download package
       id: package
       run: |
@@ -146,7 +144,7 @@ jobs:
         make download -j8
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
-        
+
     - name: Compile the firmware
       id: compile
       run: |
@@ -154,7 +152,7 @@ jobs:
         echo -e "$(nproc) thread compile"
         make -j$(nproc) || make -j1 || make -j1 V=s
         echo "status=success" >> $GITHUB_OUTPUT
-        
+
     - name: Check space usage
       if: (!cancelled())
       run: df -hT
@@ -165,7 +163,7 @@ jobs:
       with:
         name: ${{ env.BRANCH_NAME }}_bin_${{ env.DEVICE_NAME }}_${{ env.BUILD_TIME }}_${{ env.BUILD_NUMBER }}
         path: openwrt/bin
-        
+
     - name: Get environment path
       id: environment
       if: env.UPLOAD_BIN_DIR == 'true' && !cancelled()
@@ -175,7 +173,7 @@ jobs:
         cd  targets/*/*
         echo "UPLOAD_PATH=$PWD" >> $GITHUB_ENV
         echo "status=success" >> $GITHUB_OUTPUT
-        
+
     - name: Compressed kernel packages
       uses: thedoctor0/zip-release@master
       if: steps.environment.outputs.status == 'success' && steps.compile.outputs.status == 'success' && !cancelled()
@@ -184,7 +182,7 @@ jobs:
         path: packages/
         directory: ${{ env.UPLOAD_PATH }}/
         filename: ${{ env.UPLOAD_PATH }}/${{ env.BRANCH_NAME }}_firmware_kernel_packages_${{ env.DEVICE_NAME }}_${{ env.BUILD_TIME }}_${{ env.BUILD_NUMBER }}.tar.gz
-        
+
     - name: Compressed firmware packages
       uses: thedoctor0/zip-release@master
       if: steps.environment.outputs.status == 'success' && steps.compile.outputs.status == 'success' && !cancelled()
@@ -202,7 +200,7 @@ jobs:
         rm -rf packages
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
         echo "status=success" >> $GITHUB_OUTPUT
-        
+
     - name: Upload firmware directory to artifact
       uses: actions/upload-artifact@main
       if: steps.organize.outputs.status == 'success' && !cancelled()
@@ -219,4 +217,4 @@ jobs:
         files: ${{ env.FIRMWARE }}/*
         name: ${{ env.BRANCH_NAME }} ${{ env.DEVICE_NAME }}
         tag_name: ${{ env.BRANCH_NAME }}_${{ env.DEVICE_NAME }}_${{ env.BUILD_TIME }}_${{ env.BUILD_NUMBER }}
-        
+

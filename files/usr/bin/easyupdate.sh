@@ -1,6 +1,7 @@
 #!/bin/bash
 # https://github.com/uJZk/openwrt-packages
-# EasyUpdate for Openwrt modified from [luci-app-easyupdate](https://github.com/sundaqiang/openwrt-packages/tree/master/luci-app-easyupdate)
+# Easy Update Script by uJZk
+# Modified from [luci-app-easyupdate](https://github.com/sundaqiang/openwrt-packages/tree/master/luci-app-easyupdate)
 
 function checkEnv() {
 	if !type sysupgrade >/dev/null 2>&1; then
@@ -17,7 +18,7 @@ function writeLog() {
 function shellHelp() {
 	checkEnv
 	cat <<EOF
-Openwrt-EasyUpdate Script by uJZk
+Easy Update Script by uJZk
 Your firmware already includes Sysupgrade and supports automatic updates(您的固件已包含sysupgrade,支持自动更新)
 参数:
     -c                     Get the cloud firmware version(获取云端固件版本)
@@ -29,7 +30,7 @@ EOF
 
 function getCloudVer() {
 	checkEnv
-	github=$(uci get easyupdate.main.github)
+	github=$(cat /etc/openwrt_release | sed -n "s/DISTRIB_GITHUB='\(\S*\)'/\1/p")
 	github=(${github//// })
 	curl "https://api.github.com/repos/${github[2]}/${github[3]}/releases/latest" | jsonfilter -e '@.tag_name' | sed -e 's/.*\([0-9]\{12\}.*\)/\1/'
 }
@@ -37,7 +38,7 @@ function getCloudVer() {
 function downCloudVer() {
 	checkEnv
 	writeLog 'Get github project address(读取github项目地址)'
-	github=$(uci get easyupdate.main.github)
+	github=$(cat /etc/openwrt_release | sed -n "s/DISTRIB_GITHUB='\(\S*\)'/\1/p")
 	writeLog "Github project address(github项目地址):$github"
 	github=(${github//// })
 	writeLog 'Check whether EFI firmware is available(判断是否EFI固件)'
@@ -50,7 +51,7 @@ function downCloudVer() {
 	writeLog 'Get the cloud firmware link(获取云端固件链接)'
 	url=$(curl "https://api.github.com/repos/${github[2]}/${github[3]}/releases/latest" | jsonfilter -e '@.assets[*].browser_download_url' | sed -n "/$suffix/p")
 	writeLog "Cloud firmware link(云端固件链接):$url"
-	mirror=$(uci get easyupdate.main.mirror)
+	mirror=''
 	writeLog "Use mirror URL(使用镜像网站):$mirror"
 	fileName=(${url//// })
 	curl -o "/tmp/${fileName[7]}-sha256" -L "$mirror${url/${fileName[7]}/sha256sums}"
@@ -64,17 +65,9 @@ function flashFirmware() {
 		writeLog 'Please specify the file name(请指定文件名)'
 	else
 		writeLog 'Get whether to save the configuration(读取是否保存配置)'
-		keepconfig=$(uci get easyupdate.main.keepconfig)
-		if [ $keepconfig -eq 1 ]; then
-			keepconfig=' '
-			res='yes'
-		else
-			keepconfig='-n '
-			res='no'
-		fi
 		writeLog "Whether to save the configuration(读取是否保存配置):$res"
 		writeLog 'Start flash firmware, log output in /tmp/easyupdate.log(开始刷写固件，日志输出在/tmp/easyupdate.log)'
-		sysupgrade $keepconfig/tmp/$file >/tmp/easyupdate.log 2>&1 &
+		sysupgrade /tmp/$file >/tmp/easyupdate.log 2>&1 &
 	fi
 }
 
