@@ -1,5 +1,5 @@
 #!/bin/bash
-# https://github.com/uJZk/openwrt-packages
+# https://github.com/uJZk/Actions-ImmortalWrt
 # Easy Update Script by uJZk
 # Modified from [luci-app-easyupdate](https://github.com/sundaqiang/openwrt-packages/tree/master/luci-app-easyupdate)
 
