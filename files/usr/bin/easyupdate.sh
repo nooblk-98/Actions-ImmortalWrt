@@ -55,7 +55,7 @@ function downCloudVer() {
 	writeLog "Use mirror URL(使用镜像网站):$mirror"
 	fileName=(${url//// })
 	curl -o "/tmp/${fileName[7]}-sha256" -L "$mirror${url/${fileName[7]}/sha256sums}"
-	curl -o "/tmp/${fileName[7]}" -L "$mirror$url" >/tmp/easyupdate.log 2>&1 &
+	curl -m 10000 -o "/tmp/${fileName[7]}" -L "$mirror$url" >/tmp/easyupdate.log 2>&1 &
 	writeLog 'Start downloading firmware, log output in /tmp/easyupdate.log(开始下载固件，日志输出在/tmp/easyupdate.log)'
 }
 
