@@ -17,7 +17,7 @@
 sed -i '/telephony/d' feeds.conf.default
 
 # Add feed sources
-echo 'src-git daed https://github.com/QiuSimons/luci-app-daed' >> feeds.conf.default
-echo 'src-git wrtbwmon https://github.com/brvphoenix/wrtbwmon' >> feeds.conf.default
-echo 'src-git wrtbwmon_luci https://github.com/brvphoenix/luci-app-wrtbwmon' >> feeds.conf.default
-echo 'src-git sirpdboy https://github.com/sirpdboy/sirpdboy-package' >> feeds.conf.default
+echo 'src-git packages https://github.com/immortalwrt/packages.git;openwrt-24.10' >> feeds.conf.default
+echo 'src-git luci https://github.com/immortalwrt/luci.git;openwrt-24.10' >> feeds.conf.default
+echo 'src-git routing https://github.com/openwrt/routing.git;openwrt-24.10' >> feeds.conf.default
+echo 'src-git telephony https://github.com/openwrt/telephony.git;openwrt-24.10' >> feeds.conf.default
